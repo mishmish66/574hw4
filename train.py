@@ -30,21 +30,27 @@ def train(dataset, model, optimizer, args):
         data = dataset[i]  # a dict
 
         # **** YOU SHOULD ADD TRAINING CODE HERE, CURRENTLY IT IS INCORRECT ****
+
         xyz_tensor = data['xyz'].to(device)
-        loss_sum += 1. * xyz_tensor.shape[0]
-        loss_count += xyz_tensor.shape[0]
-        
+
+        optimizer.zero_grad()
+
         sigma = 0.1
-        
-        
+
+        y = data['gt_sdf'].to(device)
         y_prime = model(xyz_tensor)
-        
-        
-        loss = torch.abs(torch.clamp())
-        
+
+        loss = torch.abs(torch.clamp(y_prime, min=-sigma, max=sigma) -
+                         torch.clamp(y, min=-sigma, max=sigma)).mean()
+
+        loss.backward()
+
+        optimizer.step()
+
+        loss_sum += loss
+        loss_count += 1
 
         # ***********************************************************************
-
     return loss_sum / loss_count
 
 
@@ -60,8 +66,17 @@ def val(dataset, model, optimizer, args):
         # **** YOU SHOULD ADD TRAINING CODE HERE, CURRENTLY IT IS INCORRECT ****
         with torch.no_grad():
             xyz_tensor = data['xyz'].to(device)
-            loss_sum += 1. * xyz_tensor.shape[0]
-            loss_count += xyz_tensor.shape[0]
+
+            sigma = 0.1
+
+            y = data['gt_sdf'].to(device)
+            y_prime = model(xyz_tensor)
+
+            loss = torch.abs(torch.clamp(y_prime, min=-sigma, max=sigma) -
+                             torch.clamp(y, min=-sigma, max=sigma)).mean()
+
+            loss_sum += loss
+            loss_count += 1
         # ***********************************************************************
 
     return loss_sum / loss_count

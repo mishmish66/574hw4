@@ -34,7 +34,7 @@ class Decoder(nn.Module):
             nn.utils.weight_norm(nn.Linear(512, 509)),
             prelu,
             nn.Dropout(dropout_prob),
-        ),
+        )
 
         self.layers2 = nn.Sequential(
             nn.utils.weight_norm(nn.Linear(512, 512)),

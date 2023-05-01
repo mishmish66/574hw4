@@ -5,11 +5,39 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: train.py",
+            "name": "Python: train bunny 1000",
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/train.py",
             "console": "integratedTerminal",
+            "args": [
+                "--input_pts",
+                "data/bunny-1000.pts"
+            ],
+            "justMyCode": true
+        },
+        {
+            "name": "Python: train bunny 500",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/train.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--input_pts",
+                "data/bunny-500.pts"
+            ],
+            "justMyCode": true
+        },
+        {
+            "name": "Python: train sphere",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/train.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--input_pts",
+                "data/sphere.pts"
+            ],
             "justMyCode": true
         }
     ]
